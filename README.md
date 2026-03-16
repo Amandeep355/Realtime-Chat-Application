@@ -1,272 +1,129 @@
-Project Overview
+💬 Realtime Chat Application
+Instant messaging, peer-to-peer video calls, and file sharing — all in one place.
 
-This application allows users to join chat rooms and communicate instantly with other users in the same room.
+✨ Features
+FeatureDescription💬 Realtime MessagingInstant message delivery via WebSockets with infinite scroll history📹 P2P Video CallsBrowser-to-browser video using WebRTC — no media relay needed📁 File & Image SharingUpload and share files directly in chat😄 Message ReactionsReact to messages with emoji✏️ Edit & DeleteFull message management after sending⌨️ Typing IndicatorsSee when others are composing a message🟢 Online PresenceLive online users list with join/leave notifications🗄️ Message PersistenceChat history stored and retrieved from MongoDB
 
-Features include:
+🏗️ System Architecture
+Client (Next.js / React)
+         │
+         │  WebSocket (Socket.IO)
+         │
+Node.js + Express  ──────────  MongoDB
+  Signaling Server               Message Persistence
+📹 WebRTC Video Call Flow
+User A Browser                              User B Browser
+      │                                           │
+      │── WebRTC Offer ──▶ Signaling Server ──▶ ──│
+      │◀─ WebRTC Answer ── Signaling Server ◀── ──│
+      │                                           │
+      │◀══════════ Peer-to-Peer Media ════════════│
 
-Realtime messaging
+The server handles signaling only. After negotiation, media streams flow directly between browsers via WebRTC.
 
-WebRTC peer-to-peer video calls
 
-File and image sharing
-
-Message reactions
-
-Message editing and deletion
-
-Typing indicators
-
-Online user tracking
-
-Message persistence using MongoDB
-
-The project is designed to demonstrate how modern realtime systems work using WebSockets and WebRTC together.
-
-Tech Stack
+🛠️ Tech Stack
 Frontend
 
-Next.js (React framework)
-
-TypeScript
-
-TailwindCSS
-
-WebRTC APIs
-
-Socket.IO Client
+Next.js — React framework for the UI
+TypeScript — Type-safe development
+TailwindCSS — Utility-first styling
+Socket.IO Client — WebSocket communication
+WebRTC APIs — Peer-to-peer audio/video
 
 Backend
 
-Node.js
-
-Express.js
-
-Socket.IO
-
-Multer (file uploads)
+Node.js + Express.js — Server and REST API
+Socket.IO — Realtime event handling
+Multer — File upload middleware
 
 Database
 
-MongoDB Atlas
-
-Mongoose ODM
+MongoDB Atlas — Cloud-hosted NoSQL database
+Mongoose ODM — Schema modeling and queries
 
 Realtime Technologies
 
-WebSocket (Socket.IO)
+WebSocket (Socket.IO) — Bidirectional messaging
+WebRTC — Peer-to-peer media streaming
+STUN Servers — NAT traversal for video calls
 
-WebRTC (peer-to-peer video/audio streaming)
 
-STUN servers for NAT traversal
-
-System Architecture
-Client (Next.js React)
-        |
-        | WebSocket (Socket.IO)
-        |
-Node.js + Express Signaling Server
-        |
-        | MongoDB
-        |
-Message Persistence
-
-For video calls:
-
-User A Browser
-     |
-     | WebRTC Offer/Answer (via Socket.IO signaling)
-     |
-Signaling Server
-     |
-     |
-User B Browser
-
-After negotiation:
-
-User A  <------ Peer-to-Peer Media ------>  User B
-
-The server only handles signaling.
-Media streams flow directly between browsers using WebRTC.
-
-Features
-Realtime Messaging
-
-Instant message delivery using WebSockets
-
-Chat history stored in MongoDB
-
-Infinite scroll message loading
-
-Video Calling
-
-Peer-to-peer video communication
-
-WebRTC signaling through Socket.IO
-
-STUN server configuration
-
-Message Management
-
-Edit messages
-
-Delete messages
-
-Message reactions (emoji)
-
-File Sharing
-
-Upload images and files
-
-Multer file handling
-
-File URLs stored in MongoDB
-
-User Presence
-
-Online users list
-
-Join/leave room notifications
-
-Typing indicators
-
-Project Structure
-Realtime-Chat-Application
+📁 Project Structure
+Realtime-Chat-Application/
 │
-├── app/                 Next.js pages and routes
-├── components/          React UI components
-│   ├── ChatPanel
-│   ├── ChatInput
-│   ├── MessageList
-│   ├── VideoCall
+├── app/                  # Next.js pages and routes
+├── components/           # React UI components
+│   ├── ChatPanel/
+│   ├── ChatInput/
+│   ├── MessageList/
+│   └── VideoCall/
+├── contexts/             # React context providers
+├── lib/                  # Utilities and socket setup
+├── models/               # MongoDB Mongoose schemas
+├── public/               # Static assets
+│   └── uploads/          # Uploaded files
 │
-├── contexts/            React context providers
-├── lib/                 Utilities and socket setup
-├── models/              MongoDB schemas
-├── public/              Static files
-│
-├── server.js            Express + Socket.IO backend
-│
+├── server.js             # Express + Socket.IO backend
 ├── package.json
 ├── tsconfig.json
-└── README.md
-Installation
+└── .env
 
-Clone the repository
-
-git clone https://github.com/Amandeep355/Realtime-Chat-Application.git
-
-Move into the project
-
+🚀 Getting Started
+1. Clone the repository
+bashgit clone https://github.com/Amandeep355/Realtime-Chat-Application.git
 cd Realtime-Chat-Application
-
-Install dependencies
-
-npm install
-Environment Variables
-
-Create a .env file in the root folder.
-
-Example:
-
-MONGODB_URI=your_mongodb_connection_string
+2. Install dependencies
+bashnpm install
+3. Configure environment variables
+Create a .env file in the root directory:
+envMONGODB_URI=your_mongodb_connection_string
 PORT=3000
-Running the Application
+4. Start the development server
+bashnpm run dev
+The app will be running at http://localhost:3000
 
-Start the development server:
-
-npm run dev
-
-The application will run at:
-
-http://localhost:3000
-Video Call Flow (WebRTC)
-
-User A starts a call
-
-Signaling server sends incoming call event
-
-User B accepts call
-
-WebRTC offer/answer negotiation
-
-ICE candidates exchanged
-
-Peer-to-peer media connection established
-
-API Endpoints
-File Upload
+🔌 API Reference
 POST /upload
-
-Uploads files and returns file path.
-
-Example response:
-
-{
+Uploads a file and returns its accessible path.
+Response:
+json{
   "filePath": "/uploads/file.png"
 }
-Database Schema
 
-Example Message document:
-
-{
-  username: String,
-  message: String,
-  room: String,
-  type: "text | file",
+🗃️ Database Schema
+Message Document
+js{
+  username:  String,
+  message:   String,
+  room:      String,
+  type:      "text" | "file",
   createdAt: Date,
-  status: "sent | seen",
+  status:    "sent" | "seen",
   reactions: Object
 }
-Future Improvements
 
-Potential enhancements:
+☁️ Deployment
+LayerRecommended PlatformsFrontendVercelBackendRender · Railway · AWS EC2DatabaseMongoDB Atlas
 
-TURN servers for better WebRTC connectivity
+🔮 Future Improvements
 
-End-to-end encryption
-
-User authentication (JWT)
-
-Private messaging
-
-Push notifications
-
-Redis scaling for Socket.IO
-
-Kubernetes deployment
-
-Deployment Options
-
-The project can be deployed using:
-
-Frontend
-
-Vercel
-
-Backend
-
-Render
-
-Railway
-
-AWS EC2
-
-Database
-
-MongoDB Atlas
+ 🔄 TURN servers for improved WebRTC connectivity across strict NATs
+ 🔐 End-to-end encryption for messages and media
+ 🪪 User authentication with JWT
+ 💌 Private / direct messaging
+ 🔔 Push notifications
+ ⚡ Redis adapter for horizontal Socket.IO scaling
+ ☸️ Kubernetes deployment for production scalability
 
 
+📚 What This Project Demonstrates
 
-This project demonstrates understanding of:
+Realtime system design with WebSockets
+WebRTC peer-to-peer networking and signaling
+Node.js backend development with Express
+MongoDB data modeling and persistence
+Scalable, component-based frontend architecture with Next.js
 
-Realtime system design
 
-WebSocket architecture
-
-WebRTC peer-to-peer networking
-
-Node.js backend development
-
-MongoDB data persistence
-
-Scalable frontend architecture
+Made with ❤️ by Amandeep355
